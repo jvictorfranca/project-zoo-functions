@@ -1,5 +1,5 @@
-const { species } = require("./data");
-const data = require("./data");
+const { species } = require('./data');
+const data = require('./data');
 
 function getSpeciesByIds(...ids) {
   // seu código aqui
@@ -26,7 +26,7 @@ function addEmployee(id, firstName, lastName, managers, responsibleFor) {
   // seu código aqui
 }
 
-function countAnimals(species) {
+function countAnimals(speciess) {
   // seu código aqui
 }
 
