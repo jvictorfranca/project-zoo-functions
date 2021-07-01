@@ -222,8 +222,99 @@ function increasePrices(percentage) {
   data.prices.Child = round(data.prices.Child);
 }
 
+// REQUISITO 11 ALOU
+
+function getEmployee(id) {
+  return employees.find((employee) => employee.id === id);
+}
+
+// function getIdFirstname (firstName){
+//   return employees.find((employee)=> employee.firstName === firstName).id
+// }
+
+function getIdFirstname(firstName) {
+  return employees.find((employee) => employee.firstName === firstName) === undefined ? undefined
+    : employees.find((employee) => employee.firstName === firstName).id;
+}
+
+function getIdLastname(lastName) {
+  return employees.find((employee) => employee.lastName === lastName) === undefined ? undefined
+    : employees.find((employee) => employee.lastName === lastName).id;
+}
+
+function getEmployeeIdAll(text) {
+  let answer;
+  if (getEmployee(text) !== undefined) { answer = text; }
+  if (getIdFirstname(text) !== undefined) { answer = getIdFirstname(text); }
+  if (getIdLastname(text) !== undefined) { answer = getIdLastname(text); }
+  return answer;
+}
+
+function idToName(id) {
+  const name = employees.find((employee) => employee.id === id).firstName;
+  const { lastName } = employees.find((employee) => employee.id === id);
+  return `${name} ${lastName}`;
+}
+
+function caseArr() { // no parameters
+  return employees.map((employee) => {
+    const name = `${employee.firstName} ${employee.lastName}`;
+    const obj = {};
+    obj[name] = employee.responsibleFor.map((animal) => animal);
+    return obj;
+  });
+}
+
+function findAnimalById(id) {
+  return species.find((specie) => specie.id === id).name;
+}
+
+function findObjNames(array) {
+  return array.map((employee) => {
+    const name = Object.keys(employee)[0];
+    const obj = {};
+    const arrayValues = Object.values(employee)[0];
+    obj[name] = arrayValues.map((animal) => findAnimalById(animal));
+    return obj;
+  });
+}
+
+function findPersonArraynames(personName, array) {
+  return array.find((person) => Object.keys(person)[0] === personName);
+}
+
+function sortArray(array) {
+  const tempArray = JSON.parse(JSON.stringify(array));
+  tempArray.sort((emp1, emp2) => (Object.keys(emp1)[0] > Object.keys(emp2)[0] ? 1 : -1));
+  return tempArray;
+}
+
+function arrToObj(array) {
+  const obj = {};
+  array.forEach((value) => {
+    const name = Object.keys(value)[0];
+    const inarray = Object.values(value)[0];
+    obj[name] = inarray;
+    return obj;
+  });
+  return obj;
+}
+
 function getEmployeeCoverage(idOrName) {
   // seu código aqui
+  const id = getEmployeeIdAll(idOrName);
+  const noNames = caseArr();
+  const arrayNames = findObjNames(noNames);
+  let answer;
+  if (idOrName === undefined) {
+    answer = sortArray(arrayNames);
+    answer = arrToObj(answer);
+  } else {
+    const fullName = idToName(id);
+    answer = findPersonArraynames(fullName, arrayNames);
+  }
+
+  return answer;
 }
 
 module.exports = {
