@@ -174,9 +174,28 @@ function getSchedule(dayName) {
   console.log(object);
   return answer;
 }
+
+function findEmployee(id) {
+  return employees.find((employee) => employee.id === id);
+}
+
+function findFirstSpecie(id) {
+  const employee = findEmployee(id);
+  const firstid = employee.responsibleFor[0];
+  return firstid;
+}
+
 function getOldestFromFirstSpecies(id) {
   // seu código aqui
 
+  const firstID = findFirstSpecie(id);
+
+  const filtraId = species.find((specie) => specie.id === firstID);
+  const olderFiltrado = filtraId.residents.reduce((olderResident, resident) =>
+    (resident.age > olderResident.age ? resident : olderResident));
+  let result = olderFiltrado;
+  result = Object.values(result);
+  return result;
 }
 
 function increasePrices(percentage) {
