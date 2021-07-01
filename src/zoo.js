@@ -15,14 +15,16 @@ function getAnimalsOlderThan(animal, age) {
 
 function getEmployeeByName(employeeName) {
   // seu código aqui
-  let answer = employees.find((employee) => employee.firstName === employeeName);
+  let answer = employees.find(
+    (employee) => employee.firstName === employeeName,
+  );
   if (answer === undefined) {
-    answer = employees
-      .find((employee) => employee.lastName === employeeName);
+    answer = employees.find((employee) => employee.lastName === employeeName);
   }
   if (answer === undefined) {
     answer = {};
-  } return answer;
+  }
+  return answer;
 }
 
 function createEmployee(personalInfo, associatedWith) {
@@ -35,7 +37,13 @@ function isManager(id) {
   return employees.some((employee) => employee.managers.includes(id));
 }
 
-function addEmployee(id, firstName, lastName, managers = [], responsibleFor = []) {
+function addEmployee(
+  id,
+  firstName,
+  lastName,
+  managers = [],
+  responsibleFor = [],
+) {
   // seu código aqui
   employees.push({ id, firstName, lastName, managers, responsibleFor });
 }
@@ -46,9 +54,13 @@ function countAnimals(specieName) {
 
   if (specieName === undefined) {
     species.forEach((specie) => {
-      answer[specie.name] = specie.residents.length; return answer[specie.name];
+      answer[specie.name] = specie.residents.length;
+      return answer[specie.name];
     });
-  } else { answer = species.find((specie) => specie.name === specieName).residents.length; }
+  } else {
+    answer = species.find((specie) => specie.name === specieName).residents
+      .length;
+  }
   return answer;
 }
 
@@ -60,23 +72,103 @@ function calculateEntry(entrants) {
   const valueChild = data.prices.Child;
   const valueSenior = data.prices.Senior;
 
-  if (entrants === undefined || Object.keys(entrants).length === 0) { answer = 0; } else {
+  if (entrants === undefined || Object.keys(entrants).length === 0) {
+    answer = 0;
+  } else {
     const { Adult = 0, Child = 0, Senior = 0 } = entrants;
 
-    answer = Adult * valueAdult + Child * valueChild
-     + Senior * valueSenior;
+    answer = Adult * valueAdult + Child * valueChild + Senior * valueSenior;
   }
   return answer;
 }
 
-function getAnimalMap(options) {
-  // seu código aqui
+function fixOrder(string, action) {
+  const obj = {};
+  string.forEach((value) => {
+    obj[value] = action(value);
+  });
+  return obj;
 }
+
+function getAnimalMapCase1(string) { // if (options === undefined)
+  return species.filter((specie) => specie.location === string)
+    .map((specie) => specie.name);
+}
+
+function getAnimalMapCase2(string) {
+  return species.filter((specie) => specie.location === string).map((specie) => {
+    const object = {};
+    object[specie.name] = specie.residents.map((resident) => resident.name);
+    return object;
+  });
+}
+
+function getAnimalMapCase3(string) {
+  return species.filter((specie) => specie.location === string).map((specie) => {
+    const object = {};
+    object[specie.name] = specie.residents.map((resident) => resident.name).sort();
+    return object;
+  });
+}
+
+function getAnimalMap(options) {
+//   // seu código aqui
+//   let answer;
+//   const order = ['NE', 'NW', 'SE', 'SW'];
+//   if (options === undefined) {
+//     answer = fixOrder(order, getAnimalMapCase1);
+//   } else {
+//     const { includeNames = false, sorted = false, sex = 'any' } = options;
+//     if (includeNames === true) {
+//       answer = fixOrder(order, getAnimalMapCase2);
+//     }
+//     if (includeNames === true && sorted === true) {
+//       answer = fixOrder(order, getAnimalMapCase3);
+//     }
+//     if (includeNames === true && sex !== any) {
+
+//     }
+//   }
+//   return answer;
+}
+
+// function fixHourOpen({ object }) {
+//   let string = '';
+//   if (object.open < 12) { string = `${object.open}am`; } else {
+//     string = `${object.open - 12}pm`;
+//   }
+//   if (object.open === 0) { string = 'CLOSED'; }
+//   return string;
+// }
+
+// function fixHourClose({ object }) {
+//   let string = '';
+//   if (object.close < 12) { string = `${object.open}am`; } else {
+//     string = `${object.close - 12}pm`;
+//   }
+//   if (object.close === 0) { string = 'CLOSED'; } else { object[open] = object[open]; }
+//   return string;
+// }
 
 function getSchedule(dayName) {
   // seu código aqui
+  const object = {};
+  let answer;
+  Object.keys(data.hours).forEach((day) => {
+    if (data.hours[day].open === data.hours[day].close) {
+      object[day] = 'CLOSED';
+    } else {
+      object[day] = `Open from ${data.hours[day].open}am until ${data.hours[day].close - 12}pm`;
+    }
+  });
+  if (dayName === undefined) { answer = object; } else {
+    const answerObj = {};
+    answerObj[dayName] = object[dayName];
+    answer = answerObj;
+  }
+  console.log(object);
+  return answer;
 }
-
 function getOldestFromFirstSpecies(id) {
   // seu código aqui
 }
